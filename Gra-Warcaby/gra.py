@@ -2,6 +2,8 @@ import szachownica
 import kolory
 import pionek
 import gracz
+from ruch import *
+import pygame
 
 
 class Gra:
@@ -20,7 +22,7 @@ class Gra:
         self.pionki_biale = []
         self.pionki_czarne = []
         
-        self.szachownica = 0
+        self.szachownica = 0   #tutaj dostep do net_buttons
         
         self.ilosc_wierszy_ustawien = 3
         
@@ -33,8 +35,8 @@ class Gra:
     def utworz_pionki(self):
         
         for i in range(0, self.ilosc_pionkow):
-            self.pionki_biale.append(pionek.Zwykly_pionek(kolory.color_white))
-            self.pionki_czarne.append(pionek.Zwykly_pionek(kolory.color_black))
+            self.pionki_biale.append(pionek.Zwykly_pionek(kolory.color_white, i+1))
+            self.pionki_czarne.append(pionek.Zwykly_pionek(kolory.color_black, self.ilosc_pionkow+12-i))
             
             
     def utworz_graczy(self):
@@ -80,19 +82,41 @@ class Gra:
         self.ustaw_pionki()
         self.utworz_graczy()
         
+        self.rysuj_plansze()
+        pygame.display.update() 
+        
+     
+    def rysuj_plansze(self):
+                  
+        for wiersz_guzikow in self.szachownica.get_net_buttons():
+            for guzik in wiersz_guzikow:
+                    
+                guzik.draw_button()
+                
+                if(guzik.get_pusty() != True):
+                    guzik.get_pionek().maluj_pionek()
+                    
+                
         
     def start(self):
         
         self.przygotuj_gre()
-        
-        print(self.gracz_bialy.get_mozliwe_ruchy_bez_bicia())
         self.status = True
         
-        #while(self.status==True):
-            #for gracz_aktualny in [self.gracz_bialy, self.gracz_czarny]:
-                #if(self.status==True):
-                   # ruch=Ruch()
-                    #status = ruch.pobierz_ruch_uzytkownika(gracz_aktualny)
+        while(self.status==True):
+            for gracz_aktualny in [self.gracz_bialy, self.gracz_czarny]:
+                
+                if gracz_aktualny == self.gracz_bialy:
+                    przeciwnik = self.gracz_czarny
+                else:
+                    przeciwnik = self.gracz_bialy
+                    
+                if(self.status==True):
+                    print("Ruch gracza:  ")
+                    ruch = Ruch(gracz_aktualny, self.szachownica.get_net_buttons(), self, przeciwnik)  #aktualna siatka guzikow  self to gra
+                    status = ruch.pobierz_ruch_uzytkownika()
+                    
+
                 
         #self.zakoncz_gre()
         

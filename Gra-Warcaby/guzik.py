@@ -1,5 +1,5 @@
 
-#import kolory
+from kolory import *
 import pygame
 
 class Guzik:
@@ -24,9 +24,27 @@ class Guzik:
         #kolor
         self.colour = colour
         
+        
         #czy aktualnie wybierane
         self.podswietlony = False
+        
         self.pusty = True
+        self.pionek = 0
+        
+        #self.draw_button()
+        
+    def __str__(self): 
+        return 'obiekt button, wiersz_planszy = {}, kolumna_planszy={}'.format(self.wiersz_planszy, self.kolumna_planszy)
+    
+    def __repr__(self): 
+        return 'BUTTON([{}][{}])'.format(self.wiersz_planszy, self.kolumna_planszy)
+    
+    def ustaw_czy_pusty(self, value, pionek):
+        self.pusty = value
+        self.pionek = pionek
+        
+    def get_pionek(self):
+        return self.pionek
     
     def get_pusty(self):
         return self.pusty
@@ -51,8 +69,21 @@ class Guzik:
     
     def get_pygame_screen(self):
         return self.screen
-        
     
+    def get_podswietlony(self):
+        return self.podswietlony
+    
+    
+    
+        
+    def sprawdz_czy_najechany(self, mouse_width, mouse_height):
+        
+        if (self.x_ekranu < mouse_width < self.x_ekranu+self.bok_1) and (self.y_ekranu < mouse_height < self.y_ekranu+self.bok_2) :
+
+            return True
+        else:
+            return False
+            
     
     def draw_button(self):
         
@@ -64,12 +95,19 @@ class Guzik:
         
         if(self.podswietlony == False):
             self.podswietlony = True
+            
+            #malujemy
             pygame.draw.rect(self.screen,color_light,[self.x_ekranu, self.y_ekranu, self.bok_1, self.bok_2])
+            #ustawiamy pionek
+            if(self.pusty != True):
+                self.pionek.maluj_pionek() 
+        
         
     def zgas_button(self):
         if(self.podswietlony == True):
             self.podswietlony = False
-            pygame.draw.rect(self.screen, self.colour,[self.x_ekranu, self.y_ekranu, self.bok_1, self.bok_2])
-        
+            self.draw_button()
+            if(self.pusty != True):
+                self.pionek.maluj_pionek() 
         
             

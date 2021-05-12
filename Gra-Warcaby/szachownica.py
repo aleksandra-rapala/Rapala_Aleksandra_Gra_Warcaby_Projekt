@@ -68,20 +68,23 @@ class Szachownica:
                     button_colour = kolory.color_dark
        
     
-                #tworzymy guzik
+                #tworzymy guzik #przy twworzeniu jest amlowany
                 object_guzik = Guzik(kolumna, wiersz_ekranu, wiersz_planszy, button_colour, self.rozmiar_pola, self.screen)
             
                 #wypelniamy siatkę stworzonym guzikiem
                 self.net_buttons[wiersz_planszy][kolumna]= object_guzik
             
                 #malujemy guzik
-                object_guzik.draw_button()
+                #object_guzik.draw_button()
                 
                 
+  #tu soobna funkcja maluj siatke w ktorej maluj guziki! ma byc!!!! DO ZROBIENIA              
                 
-                
-def create_szachownica(screen):
+        
+
+           
     
+def create_szachownica(screen):
     
     szachownica = Szachownica(screen)
     szachownica.rozmiar_pola()
