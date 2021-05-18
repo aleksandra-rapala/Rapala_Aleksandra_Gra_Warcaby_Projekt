@@ -27,10 +27,10 @@ class Pionek:
             self.ustawiony=True
 
     
-     
-        
+
     
-    
+    def get_id_pionka(self):
+        return self.id_pionka
     
     def maluj_pionek(self):
          self.button.get_pygame_screen().blit(self.cialo, (self.button.get_x_ekranu(),self.button.get_y_ekranu()))
@@ -70,7 +70,17 @@ class Zwykly_pionek(Pionek):
     def get_kierunek_ruchu(self):
         return self.kierunek_ruchu
     
-    
+    def zamien_na_damke(self, pionki_gracza):
+        
+        damka = Damka(self.get_colour(), self.get_id_pionka())
+        damka.ustaw_na_polu(self.get_button())
+        
+        pionki_gracza.remove(self)  
+        pionki_gracza.append(damka)
+        
+           
+        
+        return damka    
     
     
     
@@ -80,11 +90,15 @@ class Damka(Pionek):
         super().__init__(kolor, id_pionka)
         
         self.kierunek_ruchu = [-1,1]
-        self.cialo = self.smallfont.render('C' , True , kolory.color_white)
+        
+        if self.colour == kolory.color_white:
+            self.cialo = self.smallfont.render('Db' , True , kolory.color_white)
+        else:
+            self.cialo = self.smallfont.render('Dc' , True , kolory.color_white)            
         
         
     def ustaw_na_polu(self, button):
-        Pionek.ustaw_na_polu(self, button)    
+        return Pionek.ustaw_na_polu(self, button)    
         
     def get_button(self):
         return Pionek.get_button(self)        
@@ -92,5 +106,9 @@ class Damka(Pionek):
     def get_kierunek_ruchu(self):
         return self.kierunek_ruchu        
         
-        
+    def __str__(self): 
+        return 'obiekt damka, id_pionka = {},'.format(self.id_pionka)
+    
+    def __repr__(self): 
+        return 'DAMKA({})'.format(self.id_pionka)        
         

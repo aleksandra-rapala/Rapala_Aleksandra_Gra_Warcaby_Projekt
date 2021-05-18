@@ -4,6 +4,8 @@ import pionek
 import gracz
 from ruch import *
 import pygame
+import guzik
+import messages
 
 
 class Gra:
@@ -14,8 +16,14 @@ class Gra:
         
         self.status = False
         
+        self.czyja_tura = 0
+        self.tura_czarnego = messages.Message("TURA GRACZA: CZARNEGO")
+        self.tura_bialego = messages.Message("TURA GRACZA: BIALEGO")
+        
         self.gracz_bialy = 0
         self.gracz_czarny = 0
+        
+        
         
         self.ilosc_pionkow = 12
         
@@ -23,10 +31,16 @@ class Gra:
         self.pionki_czarne = []
         
         self.szachownica = 0   #tutaj dostep do net_buttons
+        self.reset_button = 0
+        
         
         self.ilosc_wierszy_ustawien = 3
-        
-        
+        self.window_message_gracz_czarny = 0
+        self.window_message_gracz_bialy = 0
+    
+    def get_screen(self):
+        return self.screen
+    
     def utworz_szachownice(self):
         
         self.szachownica = szachownica.create_szachownica(self.screen) 
@@ -85,9 +99,30 @@ class Gra:
         self.rysuj_plansze()
         pygame.display.update() 
         
-     
+    
+    
+    def create_reset_button(self):
+        
+        self.reset_button = guzik.Reset_button(self.screen)
+        
+    def create_windows_message(self):
+        
+        self.window_message_gracz_czarny = messages.Window_message(self.screen, self.gracz_czarny)
+        self.window_message_gracz_bialy = messages.Window_message(self.screen, self.gracz_bialy)
+        
+        
     def rysuj_plansze(self):
-                  
+        
+            
+        if self.czyja_tura == self.gracz_bialy:
+            
+            self.tura_czarnego.zgas_komunikat()
+            self.tura_bialego.wyswietl_komunikat('Arial', 50, kolory.color_black, 1/5*self.screen.get_width(), 0, self.screen)
+        else:
+            self.tura_bialego.zgas_komunikat()
+            self.tura_czarnego.wyswietl_komunikat('Arial', 50, kolory.color_black, 1/5*self.screen.get_width(), 0, self.screen)
+            
+        
         for wiersz_guzikow in self.szachownica.get_net_buttons():
             for guzik in wiersz_guzikow:
                     
@@ -95,9 +130,35 @@ class Gra:
                 
                 if(guzik.get_pusty() != True):
                     guzik.get_pionek().maluj_pionek()
+        
+        self.create_reset_button()
+        self.reset_button.draw_button()     
+        
+        
+        self.create_windows_message()
+        self.window_message_gracz_czarny.draw_window_message()
+        self.window_message_gracz_bialy.draw_window_message()
                     
                 
+       
         
+    
+    def zakoncz_gre(self):
+        
+        print("KONIEC!!!!!")
+        if self.gracz_bialy.get_wygrany() == True:
+            wygrany = "BIALY"
+        else:
+            wygrany = "CZARNY"
+        print("Wygral : ", wygrany, "!!!!!")
+        
+    
+    
+    def aktualizuj_plansze(self):
+        
+        self.rysuj_plansze()
+        pygame.display.update()
+    
     def start(self):
         
         self.przygotuj_gre()
@@ -108,22 +169,34 @@ class Gra:
                 
                 if gracz_aktualny == self.gracz_bialy:
                     przeciwnik = self.gracz_czarny
+                    
+                    self.czyja_tura = self.gracz_bialy
+
+                    
+                    self.aktualizuj_plansze()
                 else:
                     przeciwnik = self.gracz_bialy
+                    
+                    self.czyja_tura = self.gracz_czarny
+                    
+                    
+                    self.aktualizuj_plansze()
                     
                 if(self.status==True):
                     print("Ruch gracza:  ")
                     ruch = Ruch(gracz_aktualny, self.szachownica.get_net_buttons(), self, przeciwnik)  #aktualna siatka guzikow  self to gra
                     status = ruch.pobierz_ruch_uzytkownika()
-                    
 
                 
-        #self.zakoncz_gre()
+        self.zakoncz_gre()
         
         
         
         
-    #def zakoncz_gre(self):
+   # def return_game(self):
+        
+        #def 
+        
         
         
         

@@ -69,7 +69,7 @@ class Szachownica:
        
     
                 #tworzymy guzik #przy twworzeniu jest amlowany
-                object_guzik = Guzik(kolumna, wiersz_ekranu, wiersz_planszy, button_colour, self.rozmiar_pola, self.screen)
+                object_guzik = Guzik(kolumna, wiersz_ekranu, wiersz_planszy, button_colour, self.rozmiar_pola, self.screen) #rozmiar pola 1 bo to kwadrat
             
                 #wypelniamy siatkę stworzonym guzikiem
                 self.net_buttons[wiersz_planszy][kolumna]= object_guzik

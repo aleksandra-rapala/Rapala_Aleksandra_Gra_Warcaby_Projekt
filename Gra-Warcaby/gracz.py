@@ -5,6 +5,8 @@ class Gracz:
     
     def __init__(self, pionki_gracza):
         
+        self.wygrany = False
+        
         self.pionki = pionki_gracza  #lista  juz ustawionych i kolorowych pionkow
         
         self.kolor_gracza = self.pionki[0].get_colour()
@@ -12,6 +14,13 @@ class Gracz:
         self.mozliwe_ruchy_bez_bicia = []  
         self.mozliwe_ruchy_z_biciem = []   #1-skad  2-dokad  3-usuwane pole przeciwnik
         
+   
+    def ustaw_wygrany(self, value):
+        self.wygrany = value
+        
+        
+    def get_wygrany(self):
+        return self.wygrany
     
     def get_pionki(self):
         return self.pionki
@@ -60,7 +69,7 @@ class Gracz:
                 
                 
                     
-                for kierunek_damki in pionek.get_kierunek(): #tu tablica dwuelementowa
+                for kierunek_damki in pionek.get_kierunek_ruchu(): #tu tablica dwuelementowa
                     
                     if( wiersz + kierunek_damki <=7 and  wiersz + kierunek_damki>=0): #nie przekracza wiersza
                             
@@ -117,28 +126,28 @@ class Gracz:
         
             elif isinstance(pionek, Damka):
                 
-                for kierunek_damki in pionek.get_kierunek(): #tu tablica dwuelementowa                
+                for kierunek_damki in pionek.get_kierunek_ruchu(): #tu tablica dwuelementowa                
                 
-                    if( wiersz + kierunek_damki <=7 and  wiersz + kierunek_damki>=0): #nie przekracza wiersza   
+                    if( wiersz + 2*kierunek_damki <=7 and  wiersz + 2*kierunek_damki>=0): #nie przekracza wiersza   
                 
                         if (kolumna+2) <= 7 : #mozna isc na prawo
                             if (net_buttons[wiersz + 2*kierunek_damki][kolumna+2]).get_pusty() == True :   #puste miejsce
                                 #ale jeszcze sprawdzamy czy na poprzednim polu stoi przeciwnik
-                                if ((net_buttons[wiersz + 2*kierunek_damki][kolumna+1]).get_pusty() == False) : #jesli cos stoi
+                                if ((net_buttons[wiersz + kierunek_damki][kolumna+1]).get_pusty() == False) : #jesli cos stoi
                                     #to sprawdzamy czy to przeciwnik:
-                                    if (net_buttons[wiersz + 2*kierunek_damki][kolumna+1].get_pionek()).get_colour()!=pionek.get_colour():
+                                    if (net_buttons[wiersz + kierunek_damki][kolumna+1].get_pionek()).get_colour()!=pionek.get_colour():
                                        #dodaj bicie
-                                        self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna+2]])
+                                        self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna+2], net_buttons[wiersz + kierunek_damki][kolumna+1]])
                         
                         if kolumna-2 >= 0: #mozna isc na lewo
  
                             if (net_buttons[wiersz + 2*kierunek_damki][kolumna-2]).get_pusty() == True :   #puste miejsce
                                 #ale jeszcze sprawdzamy czy na poprzednim polu stoi przeciwnik
-                                if ((net_buttons[wiersz + 2*kierunek_damki][kolumna-1]).get_pusty() == False) : #jesli cos stoi
+                                if ((net_buttons[wiersz + kierunek_damki][kolumna-1]).get_pusty() == False) : #jesli cos stoi
                                     #to sprawdzamy czy to przeciwnik:
-                                    if (net_buttons[wiersz + 2*kierunek_damki][kolumna-1].get_pionek()).get_colour()!=pionek.get_colour():
+                                    if (net_buttons[wiersz + kierunek_damki][kolumna-1].get_pionek()).get_colour()!=pionek.get_colour():
                                        #dodaj bicie
-                                        self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna-2]])                
+                                        self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna-2], net_buttons[wiersz + kierunek_damki][kolumna-1]])                
                 
                 
                 

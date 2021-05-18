@@ -111,3 +111,52 @@ class Guzik:
                 self.pionek.maluj_pionek() 
         
             
+            
+            
+            
+            
+class Reset_button(Guzik):
+    
+    def __init__(self, screen):
+        
+        #super().__init__(self, screen)
+        self.screen = screen
+        
+        (width_ekranu, height_ekranu) = (screen.get_width(), screen.get_height())
+        
+        #umiejscowienie na ekranie
+        print(width_ekranu, height_ekranu)
+        
+        self.x_ekranu = width_ekranu - (1/3*height_ekranu)
+        self.y_ekranu = (1+3.5)*(height_ekranu/10)       #tam gdzie zaczyna sie 4 wiersz planszy 1 to tam gdzie se zaczyna plansza
+        
+        
+        #dlugosci wymiary guzika
+        self.dlugosc = (height_ekranu/10)  #jak zwykly guzik 
+        self.szerokosc =  1/3*2/3*height_ekranu   # taka sama 
+        
+        self.colour = color_white
+        self.smallfont = pygame.font.SysFont('Arial',50) 
+    def draw_button(self):
+        
+        pygame.draw.rect(self.screen.get_typ_pygame(), self.colour,[self.x_ekranu, self.y_ekranu, self.szerokosc, self.dlugosc])   
+        
+        self.cialo = self.smallfont.render('RESET' , True , color_black)
+        self.screen.get_typ_pygame().blit(self.cialo, (self.x_ekranu,self.y_ekranu))
+      
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    
+    
+    
