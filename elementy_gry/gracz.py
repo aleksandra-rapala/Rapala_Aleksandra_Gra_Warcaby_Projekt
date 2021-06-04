@@ -1,93 +1,105 @@
-from pionek import *
+from elementy_gry import pionek as p
 
 
 class Gracz:
     
-    def __init__(self, pionki_gracza):
+    def __init__(self, pionki_gracza, kolor):
         
-        self.wygrany = False
-        
+        self.przegrany = False
         self.pionki = pionki_gracza  #lista  juz ustawionych i kolorowych pionkow
-        
-        self.kolor_gracza = self.pionki[0].get_colour()
-        
-        self.mozliwe_ruchy_bez_bicia = []  
+        self.kolor_gracza = kolor
+        self.mozliwe_ruchy_bez_bicia = []  #1-skad   2-dokad
         self.mozliwe_ruchy_z_biciem = []   #1-skad  2-dokad  3-usuwane pole przeciwnik
         
    
-    def ustaw_wygrany(self, value):
-        self.wygrany = value
+        #set
+    def ustaw_przegrany(self, value):
+        self.przegrany = value
+        
+    def ustaw_mozliwe_ruchy_bez_bicia(self, mozliwe_ruchy_bez_bicia):
+        self.mozliwe_ruchy_bez_bicia = mozliwe_ruchy_bez_bicia  
+        
+    def ustaw_mozliwe_ruchy_z_biciem(self, mozliwe_ruchy_z_biciem):
+        self.mozliwe_ruchy_z_biciem = mozliwe_ruchy_z_biciem
         
         
-    def get_wygrany(self):
-        return self.wygrany
+        #get
+        
+    def get_przegrany(self):
+        return self.przegrany
     
     def get_pionki(self):
         return self.pionki
     
-    
     def get_kolor_gracza(self):
         return self.kolor_gracza
-    
     
     def get_mozliwe_ruchy_bez_bicia(self):
         return self.mozliwe_ruchy_bez_bicia
     
-        
     def get_mozliwe_ruchy_z_biciem(self):
         return self.mozliwe_ruchy_z_biciem
     
     
+    
+    
+    #metody inne:
+    
+    
     def szukaj_mozliwe_ruchy_bez_bicia(self, net_buttons):
         
-        self.mozliwe_ruchy_bez_bicia=[]
+        tmp_mozliwe_ruchy_bez_bicia=[]
         
         for pionek in self.pionki:
-
             button = pionek.get_button()
- 
             wiersz = button.get_wiersz_planszy()      #wiersz szachownicy
             kolumna = button.get_kolumna_planszy()    #kolumna szachownicy
             
             
-            if isinstance(pionek, Zwykly_pionek):  #nie da się przekroczyc wiersza po akzdym ruchu pionek zwykly zamieniany da mke
+            #PIONEK ZWYKŁY
+            
+            if isinstance(pionek, p.Zwykly_pionek):  #nie da się przekroczyć wiersza
                 
-                if (kolumna+1) <= 7 : #mozna isc na prawo
+                if (kolumna+1) <= 7 : #mozna isć na prawo
                     
                     if (net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna+1]).get_pusty() == True :
-                        self.mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna+1]])
+                        tmp_mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna+1]])
                         
-                if kolumna-1 >= 0: #mozna isc na lewo
+                if kolumna-1 >= 0: #można isć na lewo
                     
                     if (net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna-1]).get_pusty() == True :
-                        self.mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna-1]])       
+                        tmp_mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna-1]])       
+          
         
-   #mozna to jeszcze potem uproscic w petli for     
-        
-        
-            elif isinstance(pionek, Damka): # przy damce trzeba juz sprawdzac wiersze, a by nie przekroczyc
+            #DAMKA
+            
+            elif isinstance(pionek, p.Damka): # przy damce trzeba juz sprawdzać wiersze, aby nie przekroczyć
                 
-                
-                    
                 for kierunek_damki in pionek.get_kierunek_ruchu(): #tu tablica dwuelementowa
                     
                     if( wiersz + kierunek_damki <=7 and  wiersz + kierunek_damki>=0): #nie przekracza wiersza
                             
                         if (kolumna+1) <= 7 : #mozna isc na prawo
                             if (net_buttons[wiersz + kierunek_damki][kolumna+1]).get_pusty() == True : #jezeli puste pole
-                                self.mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + kierunek_damki][kolumna+1]])
+                                tmp_mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + kierunek_damki][kolumna+1]])
                         
                         if kolumna-1 >= 0: #mozna isc na lewo
                             if (net_buttons[wiersz + kierunek_damki][kolumna-1]).get_pusty() == True : #jezeli puste pole
-                                self.mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + kierunek_damki][kolumna-1]])
+                                tmp_mozliwe_ruchy_bez_bicia.append([pionek, net_buttons[wiersz + kierunek_damki][kolumna-1]])
                                 
-                                
+            self.ustaw_mozliwe_ruchy_bez_bicia(tmp_mozliwe_ruchy_bez_bicia)                  
                               
   
+    
+    
+ 
+        
+        
         
     def szukaj_mozliwe_ruchy_z_biciem(self, net_buttons):
         
-        self.mozliwe_ruchy_z_biciem=[] #zerują stare
+        
+        tmp_mozliwe_ruchy_z_biciem=[]
         
         for pionek in self.pionki:
             
@@ -97,8 +109,9 @@ class Gracz:
             kolumna = button.get_kolumna_planszy()    #kolumna szachownicy
             
             
+            #PIONEK ZWYKŁY
             
-            if isinstance(pionek, Zwykly_pionek):        
+            if isinstance(pionek, p.Zwykly_pionek):        
         
                 if( wiersz + 2*pionek.get_kierunek_ruchu() <=7 and  wiersz + 2*pionek.get_kierunek_ruchu()>=0): #nie przekracza wiersza   
                 
@@ -109,7 +122,7 @@ class Gracz:
                                 #to sprawdzamy czy to przeciwnik:
                                 if (net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna+1].get_pionek()).get_colour()!=pionek.get_colour():
                                    #dodaj bicie
-                                    self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*pionek.get_kierunek_ruchu()][kolumna+2], net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna+1]])
+                                    tmp_mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*pionek.get_kierunek_ruchu()][kolumna+2], net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna+1]])
                         
                     if kolumna-2 >= 0: #mozna isc na lewo
  
@@ -119,12 +132,15 @@ class Gracz:
                                 #to sprawdzamy czy to przeciwnik:
                                 if (net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna-1].get_pionek()).get_colour()!=pionek.get_colour():
                                    #dodaj bicie
-                                    self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*pionek.get_kierunek_ruchu()][kolumna-2], net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna-1]])
+                                    tmp_mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*pionek.get_kierunek_ruchu()][kolumna-2], net_buttons[wiersz + pionek.get_kierunek_ruchu()][kolumna-1]])
                         
         
         
         
-            elif isinstance(pionek, Damka):
+        
+            # DAMKA
+            
+            elif isinstance(pionek, p.Damka):
                 
                 for kierunek_damki in pionek.get_kierunek_ruchu(): #tu tablica dwuelementowa                
                 
@@ -137,7 +153,7 @@ class Gracz:
                                     #to sprawdzamy czy to przeciwnik:
                                     if (net_buttons[wiersz + kierunek_damki][kolumna+1].get_pionek()).get_colour()!=pionek.get_colour():
                                        #dodaj bicie
-                                        self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna+2], net_buttons[wiersz + kierunek_damki][kolumna+1]])
+                                        tmp_mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna+2], net_buttons[wiersz + kierunek_damki][kolumna+1]])
                         
                         if kolumna-2 >= 0: #mozna isc na lewo
  
@@ -147,12 +163,12 @@ class Gracz:
                                     #to sprawdzamy czy to przeciwnik:
                                     if (net_buttons[wiersz + kierunek_damki][kolumna-1].get_pionek()).get_colour()!=pionek.get_colour():
                                        #dodaj bicie
-                                        self.mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna-2], net_buttons[wiersz + kierunek_damki][kolumna-1]])                
+                                        tmp_mozliwe_ruchy_z_biciem.append([pionek, net_buttons[wiersz + 2*kierunek_damki][kolumna-2], net_buttons[wiersz + kierunek_damki][kolumna-1]])                
                 
                 
+        self.ustaw_mozliwe_ruchy_z_biciem(tmp_mozliwe_ruchy_z_biciem)
                 
-                
-                
+                    
                 
                 
                 

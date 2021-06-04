@@ -1,13 +1,10 @@
-import kolory
-from guzik import Guzik
+from gui import kolory
+from elementy_gry import guzik
            
 
 class Szachownica:
         
-    def __init__(self, screen):
-        
-        #okno na której umieszczona szachownica
-        self.screen = screen
+    def __init__(self):
         
         #wymiary
         self.liczba_wierszy_planszy = 8
@@ -20,8 +17,10 @@ class Szachownica:
         self.net_buttons = []
         
         #rozmiar pola (guzika)
-        self.rozmiar_pola
-            
+        self.rozmiar_pola = 0
+      
+    
+        #get
             
     def get_net_buttons(self):
         return self.net_buttons
@@ -31,23 +30,26 @@ class Szachownica:
     
     def get_ilosc_kolumn(self):
         return self.liczba_kolumn_planszy
-            
-            
-    def rozmiar_pola(self):
-        
-        (width_ekranu, height_ekranu) = (self.screen.get_width(), self.screen.get_height())
     
+     
+        #set
+            
+    def ustaw_rozmiar_pola(self, width_ekranu, height_ekranu):
         self.rozmiar_pola = height_ekranu/10   #dzieki temu wysokosc ekranu podzielona na 10 kawalkow i zaczynamy od wiersza o indeksie 1 
             
             
+            
+            
+        #inne metody   
+            
     def create_net_buttons(self):   # 8x8  buttons[8][8]
             
-        net = []
-        for i in range(self.liczba_wierszy_planszy):
-            net.append([0] * self.liczba_kolumn_planszy)
+        net = [[0] * self.liczba_kolumn_planszy for i in range(self.liczba_wierszy_planszy)]
         return net
     
  
+        #set
+
     def set_net_buttons(self):
             
         self.net_buttons = self.create_net_buttons()
@@ -62,37 +64,49 @@ class Szachownica:
                     
                 #ustawiamy kolor guzika co drugi ciemny na przemian z białym
                 
-                if(wiersz_planszy%2==0 and kolumna%2==0 or wiersz_planszy%2!=0 and kolumna%2!=0):
+                f = wynik_modulo(2)
+                if(f(wiersz_planszy)==0 and f(kolumna)==0 or f(wiersz_planszy)!=0 and f(kolumna)!=0):
                     button_colour = kolory.color_white
                 else:
                     button_colour = kolory.color_dark
-       
-    
-                #tworzymy guzik #przy twworzeniu jest amlowany
-                object_guzik = Guzik(kolumna, wiersz_ekranu, wiersz_planszy, button_colour, self.rozmiar_pola, self.screen) #rozmiar pola 1 bo to kwadrat
+
+
+                object_guzik = guzik.Guzik_planszy(kolumna, wiersz_ekranu, button_colour, self.rozmiar_pola, self.rozmiar_pola, wiersz_planszy) 
             
                 #wypelniamy siatkę stworzonym guzikiem
                 self.net_buttons[wiersz_planszy][kolumna]= object_guzik
             
-                #malujemy guzik
-                #object_guzik.draw_button()
-                
-                
-  #tu soobna funkcja maluj siatke w ktorej maluj guziki! ma byc!!!! DO ZROBIENIA              
-                
+       
         
+  
 
            
+    #FUNKCJA TWORZĄCA SZACHOWNICE
     
-def create_szachownica(screen):
+def create_szachownica(display):
     
-    szachownica = Szachownica(screen)
-    szachownica.rozmiar_pola()
+    szachownica = Szachownica()
+    width_ekranu, height_ekranu = display.get_okno_pygame().get_size() 
+    szachownica.ustaw_rozmiar_pola(width_ekranu, height_ekranu)
     szachownica.set_net_buttons()
         
     return szachownica
         
+       
         
+        #lambda do uproszczenia obliczeń modulo
+def wynik_modulo(liczba):
+    return lambda val: (val % liczba)
+
+
+    
+    #generator dla stworzenia szeregu przycisków z siatki przycisków
+def wygeneruj_net_jako_szereg(net_buttons):
+    for wiersz_guzikow in net_buttons:
+        for guzik in wiersz_guzikow:
+            yield guzik              # yield oznacza, że jest to generator - nie zwykła funkcja
+
+               
 
                     
                     
