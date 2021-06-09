@@ -8,7 +8,7 @@ from gui import kolory
 
 
 class Ruch:
-    
+    """reprezentacja ruchu w grze"""
     def __init__(self, aktualny_gracz, net_buttons, gra, przeciwnik):
         
         self.przeciwnik = przeciwnik
@@ -28,6 +28,7 @@ class Ruch:
 
         #dla gui
     def zaaktualizuj_ruch(self):
+        """aktualizuje ruch, aby był widoczny w oknie gry"""
         self.gra.rysuj_plansze()
         self.gra.get_display().aktualizuj_display()
         
@@ -35,15 +36,19 @@ class Ruch:
         
         #set
     def ustaw_skad_ruch(self, guzik_skad):
+        """ustawia z jakiego pola jest wykonywany ruch"""
         self.skad=guzik_skad
         
     def ustaw_dokad_ruch(self, guzik_dokad):
+        """ustawia na jakie pole pionek zostaje przestawiony"""
         self.dokad=guzik_dokad
         
     def ustaw_czy_z_biciem(self, value):
+        """ustawia czy ruch jest z biciem"""
         self.z_biciem = value 
     
     def ustaw_zbity_guzik(self, guzik):
+        """ustawia, jaki pionek jest zbity, czyli do usunięcia z gry"""
         self.zbity = guzik
                
             
@@ -54,7 +59,7 @@ class Ruch:
         #funkcje sprawdzajace
         
     def sprawdz_czy_gracz_przegrywa(self):  #true jesli przegrywa  false jeśli nie prsegrywa i może wykonać ruch
-        
+        """sprawdza czy w danych ruchu gracz przegrywa, czyli ma brak pionków lub brak ruchu"""
         if len(self.gracz.get_mozliwe_ruchy_bez_bicia()) + len(self.gracz.get_mozliwe_ruchy_z_biciem())==0:
             self.gracz.ustaw_przegrany(True)
             return True #KONIEC GRY
@@ -67,7 +72,7 @@ class Ruch:
     
     
     def sprawdz_czy_dozwolony(self, ruch):  #tru jesli dozwolony False jesli niedozwolony
-            
+        """sprawdza czy ruch jest dozwolony"""
         for mozliwosc in self.gracz.get_mozliwe_ruchy_z_biciem():
             if ruch[0]==mozliwosc[0] and ruch[1]== mozliwosc[1]:
                 self.ustaw_czy_z_biciem(True)
@@ -82,7 +87,7 @@ class Ruch:
     
     
     def czy_kolejne_bicie(self):  #zwraca czy bedzie kolejne bicie czy nie
-        
+        """sprawdza czy aktualny gracz ma mozliwy kolejny ruch z biciem"""
         if(self.z_biciem == True):
             #to sprawdzamy czy ma kolejne bicie 
                         
@@ -112,7 +117,7 @@ class Ruch:
    #PODSTAWOWA FUNKCJA WYKONYWANIE RUCHU
     
     def pobierz_ruch_uzytkownika(self):
-        
+        """pobiera ruch użytkownika"""
         self.gracz.szukaj_mozliwe_ruchy_z_biciem(self.net_buttons)
         self.gracz.szukaj_mozliwe_ruchy_bez_bicia(self.net_buttons)
         
@@ -171,7 +176,7 @@ class Ruch:
     
 
     def wykonaj_ruch(self):
-        
+        """wykonanie ruchu, czyli zamiana danych na aktualne"""
         #WYKONANIE RUCHU
         self.skad.get_pionek().ustaw_na_polu(self.dokad)  #przenosimy pionek
         self.skad.ustaw_czy_pusty(True, None) #stary guzik robi sie pusty
@@ -194,7 +199,7 @@ class Ruch:
     
 
     def wybierz_swoj_pionek(self):
-
+        """wybor pionka w pierwszym etapie wykonania ruchu"""
         while(1):   
             klik=False
             klik = self.gra.get_display().sprawdz_czy_klikniecie()
@@ -224,7 +229,7 @@ class Ruch:
    
 
     def wybierz_pole(self, wylaczony_guzik):
-
+        """wybiera pole w drugim etapie wykonywania ruchu"""
         while(1):        
             klik=False
             klik = self.gra.get_display().sprawdz_czy_klikniecie()
@@ -260,6 +265,7 @@ class Ruch:
    #sprawdza czy gracz wybral w pierwszym etapie swojego ruchu swoj pionek (dla GUI)
     
     def sprawdz_czy_prawidlowy_pionek(self, button):
+        """sprawdza czy wybrany pionek jest prawidłowy podczas wykonywania ruchu"""
         try:
                 if(button.get_pusty() == True):
                     raise wyjatki.ErrorPolePuste("Brak twojego pionka!-To pole jest puste!")

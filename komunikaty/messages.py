@@ -4,7 +4,7 @@ from gui import kolory
 # dla tytulu znajdującego sie nad plansza gry "tura bialego" lub "tura czarnego"
 
 class Message_czyja_kolej:
-    
+    """ odpowiedzialna za napisy nad planszą, które informują czyja aktualnie jest tura """
     def __init__(self, napis):
         
         self.text = napis
@@ -18,12 +18,13 @@ class Message_czyja_kolej:
         #get
         
     def get_text(self):
+        """ zwraca tekst komunikatu """
         return self.text
     
     
         #dla GUI
     def wyswietl_komunikat(self, display, rozmiar, kolor, x_ekr, y_ekr):
-        
+        """ wyświetla komunikat """
         self.rozmiar = rozmiar
         self.kolor = kolor
         self.x_ekr = x_ekr
@@ -40,7 +41,7 @@ class Message_czyja_kolej:
         
         
 class Window_message:
-    
+    """ okna dla graczy, w których będą się pojawiać komunikaty o błędach podczas wykonywania ruchu """
     def __init__(self, gracz, display):
         
         self.gracz = gracz
@@ -81,11 +82,13 @@ class Window_message:
     #dla GUI
     
     def draw_window_message(self, display):  #rysuje okienko w  którym gracz dostaje komunikaty
+        """ maluje okno """
         display.draw_window_message(self.colour, self.x_ekranu, self.y_ekranu, self.szerokosc, self.dlugosc)
         
              
         
     def wstaw_komunikat_dla_gracza(self, display, message):  #rysuje komunikaty w okienkach
+        """ wstawia komunikat do okna """
         display.wstaw_komunikat_dla_gracza(message, kolory.color_black, self.x_ekranu, self.y_ekranu, self.ilosc_komunikatow)
         self.ilosc_komunikatow +=1
         

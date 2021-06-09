@@ -3,7 +3,7 @@ from elementy_gry import guzik
            
 
 class Szachownica:
-        
+    """reprezentuje szachownice"""
     def __init__(self):
         
         #wymiary
@@ -23,18 +23,22 @@ class Szachownica:
         #get
             
     def get_net_buttons(self):
+        """zwraca siatkę przycisków"""
         return self.net_buttons
     
     def get_ilosc_wierszy(self):
+        """zwraca ilość wierszy, z których zbudowana jest szachownica"""
         return self.liczba_wierszy_planszy
     
     def get_ilosc_kolumn(self):
+        """zwraca ilość kolumn, z których zbudowana jest szachownica"""
         return self.liczba_kolumn_planszy
     
      
         #set
             
     def ustaw_rozmiar_pola(self, width_ekranu, height_ekranu):
+        """ustawia rozmiar pola"""
         self.rozmiar_pola = height_ekranu/10   #dzieki temu wysokosc ekranu podzielona na 10 kawalkow i zaczynamy od wiersza o indeksie 1 
             
             
@@ -43,7 +47,7 @@ class Szachownica:
         #inne metody   
             
     def create_net_buttons(self):   # 8x8  buttons[8][8]
-            
+        """tworzy siatke przycisków, a więc szachownice"""
         net = [[0] * self.liczba_kolumn_planszy for i in range(self.liczba_wierszy_planszy)]
         return net
     
@@ -51,7 +55,7 @@ class Szachownica:
         #set
 
     def set_net_buttons(self):
-            
+        """ustawia guziki"""
         self.net_buttons = self.create_net_buttons()
             
         #malujemy 64 guzików, czyli tworzymy plasze 8x8
@@ -84,7 +88,7 @@ class Szachownica:
     #FUNKCJA TWORZĄCA SZACHOWNICE
     
 def create_szachownica(display):
-    
+    """tworzy szachownice do gry"""
     szachownica = Szachownica()
     width_ekranu, height_ekranu = display.get_okno_pygame().get_size() 
     szachownica.ustaw_rozmiar_pola(width_ekranu, height_ekranu)
@@ -96,12 +100,14 @@ def create_szachownica(display):
         
         #lambda do uproszczenia obliczeń modulo
 def wynik_modulo(liczba):
+    """dla uproszczenia wykonuje modulo"""
     return lambda val: (val % liczba)
 
 
     
     #generator dla stworzenia szeregu przycisków z siatki przycisków
 def wygeneruj_net_jako_szereg(net_buttons):
+    """generator, który z siatki przycisków tworzy szereg guzików"""
     for wiersz_guzikow in net_buttons:
         for guzik in wiersz_guzikow:
             yield guzik              # yield oznacza, że jest to generator - nie zwykła funkcja

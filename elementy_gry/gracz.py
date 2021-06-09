@@ -2,7 +2,7 @@ from elementy_gry import pionek as p
 
 
 class Gracz:
-    
+    """gracz """
     def __init__(self, pionki_gracza, kolor):
         
         self.przegrany = False
@@ -14,30 +14,38 @@ class Gracz:
    
         #set
     def ustaw_przegrany(self, value):
+        """ustawia kto jest przegrany"""
         self.przegrany = value
         
     def ustaw_mozliwe_ruchy_bez_bicia(self, mozliwe_ruchy_bez_bicia):
+        """ustawia możliwe ruchy bez bicia"""
         self.mozliwe_ruchy_bez_bicia = mozliwe_ruchy_bez_bicia  
         
     def ustaw_mozliwe_ruchy_z_biciem(self, mozliwe_ruchy_z_biciem):
+        """ustawia możliwe ruchy z biciem"""
         self.mozliwe_ruchy_z_biciem = mozliwe_ruchy_z_biciem
         
         
         #get
         
     def get_przegrany(self):
+        """zwraca informację, czy gracz przegrał"""
         return self.przegrany
     
     def get_pionki(self):
+        """zwraca pionki gracza"""
         return self.pionki
     
     def get_kolor_gracza(self):
+        """zwraca kolor gracza"""
         return self.kolor_gracza
     
     def get_mozliwe_ruchy_bez_bicia(self):
+        """zwraca możliwe ruchy bez bicia"""
         return self.mozliwe_ruchy_bez_bicia
     
     def get_mozliwe_ruchy_z_biciem(self):
+        """zwraca możliwe ruchy z biciem"""
         return self.mozliwe_ruchy_z_biciem
     
     
@@ -47,7 +55,7 @@ class Gracz:
     
     
     def szukaj_mozliwe_ruchy_bez_bicia(self, net_buttons):
-        
+        """szuka mozliwe ruchy bez bicia"""
         tmp_mozliwe_ruchy_bez_bicia=[]
         
         for pionek in self.pionki:
@@ -98,7 +106,7 @@ class Gracz:
         
     def szukaj_mozliwe_ruchy_z_biciem(self, net_buttons):
         
-        
+        """szuka mozliwe ruchy z biciem"""
         tmp_mozliwe_ruchy_z_biciem=[]
         
         for pionek in self.pionki:

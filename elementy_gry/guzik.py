@@ -2,7 +2,7 @@ from gui import kolory
 
 class Guzik:
         
-    
+    """reprezentacja guzika"""
     def __init__(self, x, y, colour, dlugosc_boku1, dlugosc_boku2):
             
         #wymiary
@@ -26,28 +26,35 @@ class Guzik:
            #get   
                    
     def get_x_ekranu(self):
+        """zwraca pozycje x ekranu"""
         return self.x_ekranu
     
     def get_y_ekranu(self):
+        """zwraca pozycje y ekranu"""
         return self.y_ekranu
     
     def get_wiersz_planszy(self):
+        """zwraca wiersz planszy na którym jest guzik"""
         return self.wiersz_planszy
     
     def get_kolumna_planszy(self):
+        """zwraca kolumnę planszy na której jest guzik"""
         return self.kolumna_planszy  
 
     def pobierz_bok_1(self):
+        """zwraca dlugosc boku1 guzika"""
         return self.bok_1
     
     def pobierz_bok_2(self):
+        """zwraca dlugosc boku2 guzika"""
         return self.bok_2
         
     def get_podswietlony(self):
+        """zwraca informację o tym, czy guzik jest aktualnie podświetlony"""
         return self.podswietlony
      
     def sprawdz_czy_najechany(self, mouse_width, mouse_height):
-        
+        """sprwadza czy guzik jest aktualnie najechany myszką"""
         #pomocnicza lambda
         dodawanie = lambda x, y : x + y
         
@@ -61,17 +68,19 @@ class Guzik:
     #dla GUI
     
     def draw_button(self, display):
+        """maluje guzik"""
         display.maluj_guzik(self.colour_aktualny, self.x_ekranu, self.y_ekranu, self.bok_1, self.bok_2)
         
         
     def podswietl_button(self, display):
-            self.colour_aktualny = kolory.color_light
-            self.draw_button(display)
+        """podświetla guzik"""
+        self.colour_aktualny = kolory.color_light
+        self.draw_button(display)
             
     def zgas_button(self, display):
-
-            self.colour_aktualny = self.colour_staly
-            self.draw_button(display)
+        """gasi guzik"""
+        self.colour_aktualny = self.colour_staly
+        self.draw_button(display)
 
     
     #wirtualne
@@ -91,7 +100,7 @@ class Guzik:
             
 
 class Guzik_planszy(Guzik):
-    
+    """guzik planszy, a więc pole planszy"""
     def __init__(self, x, y, colour, dlugosc_boku1, dlugosc_boku2, wiersz_planszy):
         super().__init__(x, y, colour, dlugosc_boku1, dlugosc_boku2)
         
@@ -105,6 +114,7 @@ class Guzik_planszy(Guzik):
         #set
         
     def ustaw_czy_pusty(self, value, pionek):
+        """ustawia, czy pole jest puste, czy zajęte przez dany pionek"""
         self.pusty = value
         self.pionek = pionek
         
@@ -112,9 +122,11 @@ class Guzik_planszy(Guzik):
         # get
         
     def get_pionek(self):
+        """zwraca pionek znajdujący się na guziku"""
         return self.pionek
     
     def get_pusty(self):
+        """zwraca informację, czy na polu stoi pionek, czy nie"""
         return self.pusty
     
     
@@ -129,7 +141,7 @@ class Guzik_planszy(Guzik):
     
     #nadpisujemy metode z klasy bazowej
     def podswietl_button(self, display):
-        
+        """podświetla guzik"""
         Guzik.podswietl_button(self, display)
             
         #ustawiamy pionek
@@ -139,7 +151,7 @@ class Guzik_planszy(Guzik):
         
        #nadopisujemy metode z klasy bazowej 
     def zgas_button(self, display):
-
+        """gasi guzik"""
         Guzik.zgas_button(self, display)
             
             #ustawiamy pionek
@@ -153,7 +165,7 @@ class Guzik_planszy(Guzik):
     
       
 class Reset_button(Guzik):
-    
+    """guzik odpowiedzialny za resetowanie gry"""
     def __init__(self, width_ekranu, height_ekranu):      
     
         self.x_ekranu = width_ekranu - (1/3*height_ekranu)
@@ -173,15 +185,18 @@ class Reset_button(Guzik):
     #dla GUI    
         
     def podswietl_button(self, display):
+        """podswietla guzik"""
         Guzik.podswietl_button(self, display)
         display.wstaw_napis_na_guziku(self.napis, self.x_ekranu, self.y_ekranu, kolory.color_black)
             
     def zgas_button(self, display):
+        """gasi guzik"""
         Guzik.zgas_button(self, display)
         display.wstaw_napis_na_guziku(self.napis, self.x_ekranu, self.y_ekranu, kolory.color_black)
             
 
     def draw_reset_button(self, display):
+        """maluje reset guzik"""
         Guzik.draw_button(self, display)
         display.wstaw_napis_na_guziku(self.napis, self.x_ekranu, self.y_ekranu, kolory.color_black)
    
@@ -196,7 +211,7 @@ class Reset_button(Guzik):
         
         
 class okey(Guzik):
-    
+    """guzik okey"""
     def __init__(self, width_ekranu, height_ekranu, gracz):
               
         self.gracz = gracz
@@ -225,14 +240,17 @@ class okey(Guzik):
     #dla GUI    
         
     def podswietl_button(self, display):
+        """podswietla guzik"""
         Guzik.podswietl_button(self, display)
         display.wstaw_napis_na_guziku(self.napis, self.x_ekranu, self.y_ekranu, kolory.color_black) 
             
     def zgas_button(self, display):
+        """gasi guzik"""
         Guzik.zgas_button(self, display)
         display.wstaw_napis_na_guziku(self.napis, self.x_ekranu, self.y_ekranu, kolory.color_black) 
         
     def draw_okey_button(self, display):
+        """maluje guzik okey"""
         Guzik.draw_button(self, display)
         display.wstaw_napis_na_guziku(self.napis, self.x_ekranu, self.y_ekranu, kolory.color_black)        
         
